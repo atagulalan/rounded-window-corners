@@ -26,7 +26,12 @@
         <property name="title" translatable="yes">Global settings</property>
         <property name="description" translatable="yes">These settings will have an effect on all windows</property>
         <child>
-          <object class="AdwActionRow">
+          <object class="AdwSwitchRow" id="separateBorderWidths">
+            <property name="title" translatable="yes">Use separate border width for inner and outer borders</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow" id="borderWidthRow">
             <property name="title" translatable="yes">Border width</property>
             <child>
               <object class="GtkScale">
@@ -43,6 +48,34 @@
                 <property name="adjustment">
                   <object class="GtkAdjustment" id="borderWidth">
                     <property name="lower">-20</property>
+                    <property name="upper">20</property>
+                    <property name="page-increment">1</property>
+                    <property name="step-increment">1</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow" id="outerBorderWidthRow">
+            <property name="visible">false</property>
+            <property name="title" translatable="yes">Outer border width</property>
+            <child>
+              <object class="GtkScale">
+                <property name="valign">center</property>
+                <property name="hexpand">true</property>
+                <property name="draw-value">true</property>
+                <property name="round-digits">0</property>
+                <property name="digits">0</property>
+                <property name="orientation">horizontal</property>
+                <property name="value-pos">left</property>
+                <marks>
+                  <mark value="0" position="bottom">0</mark>
+                </marks>
+                <property name="adjustment">
+                  <object class="GtkAdjustment" id="secondaryBorderWidth">
+                    <property name="lower">0</property>
                     <property name="upper">20</property>
                     <property name="page-increment">1</property>
                     <property name="step-increment">1</property>

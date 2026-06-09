@@ -27,15 +27,16 @@ uniform vec4 bounds;
 // The border radius of the corner clipping.
 uniform float clipRadius;
 
-// Width and color of the border
-uniform float borderWidth;
+// Width and color of the borders
+uniform float innerBorderWidth;
+uniform float outerBorderWidth;
 uniform vec4 borderColor;
 
-// Bounds and clip radius of the area inside of borders.
-// When using inner borders, this is the smaller window area within those borders.
-// With outer borders, this is the total area of the window together with them.
-uniform vec4 borderedAreaBounds;
-uniform float borderedAreaClipRadius;
+// Bounds and clip radius of the inner content area and outer border area.
+uniform vec4 innerBorderedAreaBounds;
+uniform float innerBorderedAreaClipRadius;
+uniform vec4 outerBorderedAreaBounds;
+uniform float outerBorderedAreaClipRadius;
 
 // Exponent to use for squircle corners
 uniform float exponent;
@@ -163,35 +164,17 @@ void main() {
 
     float pointAlpha = getPointOpacity(p, bounds, clipRadius, exponent);
 
-    if (borderWidth > 0.9 || borderWidth < -0.9) {
-        // If there is a border, we have to paint it.
+    cogl_color_out *= pointAlpha;
 
-        // Calculate if the point lies within the bordered area (see the
-        // `borderedAreaBounds` uniform for an explanation of what this means)
-        float borderedAreaAlpha = getPointOpacity(p, borderedAreaBounds, borderedAreaClipRadius, exponent);
+    if (outerBorderWidth > 0.9) {
+        float outerBorderedAreaAlpha = getPointOpacity(p, outerBorderedAreaBounds, outerBorderedAreaClipRadius, exponent);
+        vec4 borderRect = vec4(borderColor.rgb, 1.0) * outerBorderedAreaAlpha * borderColor.a;
+        cogl_color_out = mix(borderRect, cogl_color_out, pointAlpha);
+    }
 
-        if (borderWidth > 0.0) {
-            // Inner borders
-
-            // Clip points that are not inside of the window
-            cogl_color_out *= pointAlpha;
-            // Calculate if the point is located on the border itself
-            float borderAlpha = clamp(abs(pointAlpha - borderedAreaAlpha), 0.0, 1.0);
-            // Then, mix the window color and the border color
-            cogl_color_out = mix(cogl_color_out, vec4(borderColor.rgb, 1.0), borderAlpha * borderColor.a);
-        } else {
-            // Outer borders
-
-            // If the point is within the bordered area, paint it with the
-            // border color
-            vec4 borderRect = vec4(borderColor.rgb, 1.0) * borderedAreaAlpha * borderColor.a;
-            // Then, if the point is also inside of the actual window
-            // (pointAlpha = 1), draw the correct window pixel on top
-            cogl_color_out = mix(borderRect, cogl_color_out, pointAlpha);
-        }
-    } else {
-        // If there's no border, just multiply the output color by the calculated
-        // alpha value.
-        cogl_color_out *= pointAlpha;
+    if (innerBorderWidth > 0.9) {
+        float innerBorderedAreaAlpha = getPointOpacity(p, innerBorderedAreaBounds, innerBorderedAreaClipRadius, exponent);
+        float borderAlpha = clamp(abs(pointAlpha - innerBorderedAreaAlpha), 0.0, 1.0);
+        cogl_color_out = mix(cogl_color_out, vec4(borderColor.rgb, 1.0), borderAlpha * borderColor.a);
     }
 }

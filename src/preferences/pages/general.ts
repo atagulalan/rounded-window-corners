@@ -12,6 +12,8 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
+import {gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+
 import {bindPref, getPref, setPref} from '../../utils/settings.js';
 import {EditShadowPage} from './edit_shadow.js';
 import {ResetPage} from './reset.js';
@@ -31,7 +33,11 @@ export const GeneralPage = GObject.registerClass(
         InternalChildren: [
             'skipLibadwaita',
             'skipLibhandy',
+            'separateBorderWidths',
+            'borderWidthRow',
             'borderWidth',
+            'outerBorderWidthRow',
+            'secondaryBorderWidth',
             'borderColor',
             'useFocusedBorderColor',
             'focusedBorderColorRow',
@@ -49,7 +55,11 @@ export const GeneralPage = GObject.registerClass(
     class extends Adw.PreferencesPage {
         private declare _skipLibadwaita: Adw.SwitchRow;
         private declare _skipLibhandy: Adw.SwitchRow;
+        private declare _separateBorderWidths: Adw.SwitchRow;
+        private declare _borderWidthRow: Adw.ActionRow;
         private declare _borderWidth: Gtk.Adjustment;
+        private declare _outerBorderWidthRow: Adw.ActionRow;
+        private declare _secondaryBorderWidth: Gtk.Adjustment;
         private declare _borderColor: Gtk.ColorDialogButton;
         private declare _useFocusedBorderColor: Adw.SwitchRow;
         private declare _focusedBorderColorRow: Adw.ActionRow;
@@ -83,10 +93,42 @@ export const GeneralPage = GObject.registerClass(
             );
 
             bindPref(
+                'separate-border-widths',
+                this._separateBorderWidths,
+                'active',
+                Gio.SettingsBindFlags.DEFAULT,
+            );
+            this._separateBorderWidths.connect(
+                'notify::active',
+                (swtch: Adw.SwitchRow) => {
+                    const active = swtch.get_active();
+                    if (active) {
+                        this.#onSeparateBorderWidthsEnabled();
+                        this.#updateBorderWidthUi(true);
+                    } else {
+                        // Expand the adjustment range before writing a negative
+                        // border-width, otherwise the GSettings bind clamps it to 0.
+                        this.#updateBorderWidthUi(false);
+                        this.#onSeparateBorderWidthsDisabled();
+                    }
+                },
+            );
+
+            bindPref(
                 'border-width',
                 this._borderWidth,
                 'value',
                 Gio.SettingsBindFlags.DEFAULT,
+            );
+            bindPref(
+                'secondary-border-width',
+                this._secondaryBorderWidth,
+                'value',
+                Gio.SettingsBindFlags.DEFAULT,
+            );
+
+            this.#updateBorderWidthUi(
+                this._separateBorderWidths.get_active(),
             );
 
             const color = new Gdk.RGBA();
@@ -257,6 +299,36 @@ export const GeneralPage = GObject.registerClass(
 
         #updateFocusedBorderColorUi(enabled: boolean) {
             this._focusedBorderColorRow.set_visible(enabled);
+        }
+
+        #onSeparateBorderWidthsEnabled() {
+            const current = getPref('border-width');
+            setPref('border-width', current > 0 ? current : 0);
+            setPref(
+                'secondary-border-width',
+                current < 0 ? -current : 0,
+            );
+        }
+
+        #onSeparateBorderWidthsDisabled() {
+            const inner = getPref('border-width');
+            const outer = getPref('secondary-border-width');
+            setPref('border-width', inner === 0 ? -outer : inner);
+            setPref('secondary-border-width', 0);
+        }
+
+        #updateBorderWidthUi(separate: boolean) {
+            this._borderWidthRow.set_title(
+                separate ? _('Inner border width') : _('Border width'),
+            );
+            this._outerBorderWidthRow.set_visible(separate);
+            if (separate) {
+                this._borderWidth.set_lower(0);
+                this._borderWidth.set_upper(20);
+            } else {
+                this._borderWidth.set_lower(-20);
+                this._borderWidth.set_upper(20);
+            }
         }
     },
 );

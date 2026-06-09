@@ -54,6 +54,9 @@ export const ResetPage = GObject.registerClass(
             'keep-shadow-for-maximized-fullscreen':
                 'Keep Window Shadows when Maximized or Fullscreen',
             'border-width': 'Border Width',
+            'secondary-border-width': 'Outer Border Width',
+            'separate-border-widths':
+                'Use Separate Border Width for Inner and Outer Borders',
             'use-focused-border-color': 'Different Border Color when Focused',
             'focused-border-color': 'Focused Border Color',
             'debug-mode': 'Enable Log',

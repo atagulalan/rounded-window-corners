@@ -36,8 +36,19 @@
 
     <key name="border-width" type="i">
       <summary>Border width for rounded corners window</summary>
-      <range min="-40" max="40"/>
+      <range min="-20" max="20"/>
       <default>0</default>
+    </key>
+
+    <key name="secondary-border-width" type="i">
+      <summary>Outer border width for rounded corners window</summary>
+      <range min="0" max="20"/>
+      <default>0</default>
+    </key>
+
+    <key name="separate-border-widths" type="b">
+      <summary>Use separate border width for inner and outer borders</summary>
+      <default>false</default>
     </key>
 
     <key name="global-rounded-corner-settings" type="a{sv}">

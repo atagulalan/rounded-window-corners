@@ -17,10 +17,13 @@ const [declarations, code] = readShader(
 class Uniforms {
     bounds = 0;
     clipRadius = 0;
-    borderWidth = 0;
+    innerBorderWidth = 0;
+    outerBorderWidth = 0;
     borderColor = 0;
-    borderedAreaBounds = 0;
-    borderedAreaClipRadius = 0;
+    innerBorderedAreaBounds = 0;
+    innerBorderedAreaClipRadius = 0;
+    outerBorderedAreaBounds = 0;
+    outerBorderedAreaClipRadius = 0;
     exponent = 0;
     pixelStep = 0;
 }
@@ -69,7 +72,19 @@ export const RoundedCornersEffect = GObject.registerClass(
             windowBounds: Bounds,
             borderColor: [number, number, number, number],
         ) {
+            const separateBorderWidths = getPref('separate-border-widths');
             const borderWidth = getPref('border-width') * scaleFactor;
+            let innerBorderWidth: number;
+            let outerBorderWidth: number;
+
+            if (separateBorderWidths) {
+                innerBorderWidth = borderWidth;
+                outerBorderWidth =
+                    getPref('secondary-border-width') * scaleFactor;
+            } else {
+                innerBorderWidth = borderWidth > 0 ? borderWidth : 0;
+                outerBorderWidth = borderWidth < 0 ? -borderWidth : 0;
+            }
 
             const outerRadius = config.borderRadius * scaleFactor;
             const {padding, smoothing} = config;
@@ -81,16 +96,28 @@ export const RoundedCornersEffect = GObject.registerClass(
                 windowBounds.y2 - padding.bottom * scaleFactor,
             ];
 
-            const borderedAreaBounds = [
-                bounds[0] + borderWidth,
-                bounds[1] + borderWidth,
-                bounds[2] - borderWidth,
-                bounds[3] - borderWidth,
+            const innerBorderedAreaBounds = [
+                bounds[0] + innerBorderWidth,
+                bounds[1] + innerBorderWidth,
+                bounds[2] - innerBorderWidth,
+                bounds[3] - innerBorderWidth,
             ];
 
-            let borderedAreaRadius = outerRadius - borderWidth;
-            if (borderedAreaRadius < 0.001) {
-                borderedAreaRadius = 0.0;
+            let innerBorderedAreaRadius = outerRadius - innerBorderWidth;
+            if (innerBorderedAreaRadius < 0.001) {
+                innerBorderedAreaRadius = 0.0;
+            }
+
+            const outerBorderedAreaBounds = [
+                bounds[0] - outerBorderWidth,
+                bounds[1] - outerBorderWidth,
+                bounds[2] + outerBorderWidth,
+                bounds[3] + outerBorderWidth,
+            ];
+
+            let outerBorderedAreaRadius = outerRadius + outerBorderWidth;
+            if (outerBorderedAreaRadius < 0.001) {
+                outerBorderedAreaRadius = 0.0;
             }
 
             const pixelStep = [
@@ -109,15 +136,19 @@ export const RoundedCornersEffect = GObject.registerClass(
                 exponent *= maxRadius / radius;
                 radius = maxRadius;
             }
-            borderedAreaRadius *= radius / outerRadius;
+            innerBorderedAreaRadius *= radius / outerRadius;
+            outerBorderedAreaRadius *= radius / outerRadius;
 
             this.#setUniforms(
                 bounds,
                 radius,
-                borderWidth,
+                innerBorderWidth,
+                outerBorderWidth,
                 borderColor,
-                borderedAreaBounds,
-                borderedAreaRadius,
+                innerBorderedAreaBounds,
+                innerBorderedAreaRadius,
+                outerBorderedAreaBounds,
+                outerBorderedAreaRadius,
                 pixelStep,
                 exponent,
             );
@@ -126,25 +157,41 @@ export const RoundedCornersEffect = GObject.registerClass(
         #setUniforms(
             bounds: number[],
             radius: number,
-            borderWidth: number,
+            innerBorderWidth: number,
+            outerBorderWidth: number,
             borderColor: [number, number, number, number],
-            borderedAreaBounds: number[],
-            borderedAreaRadius: number,
+            innerBorderedAreaBounds: number[],
+            innerBorderedAreaRadius: number,
+            outerBorderedAreaBounds: number[],
+            outerBorderedAreaRadius: number,
             pixelStep: number[],
             exponent: number,
         ) {
             const uniforms = Effect.uniforms;
             this.set_uniform_float(uniforms.bounds, 4, bounds);
             this.set_uniform_float(uniforms.clipRadius, 1, [radius]);
-            this.set_uniform_float(uniforms.borderWidth, 1, [borderWidth]);
+            this.set_uniform_float(uniforms.innerBorderWidth, 1, [
+                innerBorderWidth,
+            ]);
+            this.set_uniform_float(uniforms.outerBorderWidth, 1, [
+                outerBorderWidth,
+            ]);
             this.set_uniform_float(uniforms.borderColor, 4, borderColor);
             this.set_uniform_float(
-                uniforms.borderedAreaBounds,
+                uniforms.innerBorderedAreaBounds,
                 4,
-                borderedAreaBounds,
+                innerBorderedAreaBounds,
             );
-            this.set_uniform_float(uniforms.borderedAreaClipRadius, 1, [
-                borderedAreaRadius,
+            this.set_uniform_float(uniforms.innerBorderedAreaClipRadius, 1, [
+                innerBorderedAreaRadius,
+            ]);
+            this.set_uniform_float(
+                uniforms.outerBorderedAreaBounds,
+                4,
+                outerBorderedAreaBounds,
+            );
+            this.set_uniform_float(uniforms.outerBorderedAreaClipRadius, 1, [
+                outerBorderedAreaRadius,
             ]);
             this.set_uniform_float(uniforms.pixelStep, 2, pixelStep);
             this.set_uniform_float(uniforms.exponent, 1, [exponent]);

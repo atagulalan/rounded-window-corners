@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-09 20:52+0300\n"
+"POT-Creation-Date: 2026-06-09 21:20+0300\n"
 "PO-Revision-Date: 2023-01-04 20:51+0000\n"
 "Last-Translator: phlostically <phlostically@mailinator.com>\n"
 "Language-Team: Esperanto <https://hosted.weblate.org/projects/rounded-window-"
@@ -127,82 +127,91 @@ msgid "These settings will have an effect on all windows"
 msgstr ""
 
 #: src/preferences/pages/general.ui:30
+msgid "Use separate border width for inner and outer borders"
+msgstr ""
+
+#: src/preferences/pages/general.ui:35 src/preferences/pages/general.ts:322
 #, fuzzy
 msgid "Border width"
 msgstr "Randa larĝo"
 
-#: src/preferences/pages/general.ui:57 src/preferences/pages/general.ui:65
+#: src/preferences/pages/general.ui:63
+#, fuzzy
+msgid "Outer border width"
+msgstr "Randa larĝo"
+
+#: src/preferences/pages/general.ui:90 src/preferences/pages/general.ui:98
 #: src/preferences/widgets/custom_settings_row.ts:20
 #, fuzzy
 msgid "Border color"
 msgstr "Randa koloro"
 
-#: src/preferences/pages/general.ui:74
+#: src/preferences/pages/general.ui:107
 msgid "Different border color when focused"
 msgstr ""
 
-#: src/preferences/pages/general.ui:80 src/preferences/pages/general.ui:88
+#: src/preferences/pages/general.ui:113 src/preferences/pages/general.ui:121
 #, fuzzy
 msgid "Focused border color"
 msgstr "Randa koloro"
 
-#: src/preferences/pages/general.ui:97
+#: src/preferences/pages/general.ui:130
 #: src/preferences/widgets/custom_settings_row.ts:28
 #, fuzzy
 msgid "Corner radius"
 msgstr "Randa radiuso"
 
-#: src/preferences/pages/general.ui:124
+#: src/preferences/pages/general.ui:157
 #: src/preferences/widgets/custom_settings_row.ts:38
 msgid "Corner smoothing"
 msgstr ""
 
-#: src/preferences/pages/general.ui:150
+#: src/preferences/pages/general.ui:183
 msgid "Window shadow"
 msgstr ""
 
-#: src/preferences/pages/general.ui:151
+#: src/preferences/pages/general.ui:184
 msgid "Customize the shadow of the rounded corner window"
 msgstr ""
 
-#: src/preferences/pages/general.ui:163
+#: src/preferences/pages/general.ui:196
 msgid "Keep shadows for maximized and fullscreen windows"
 msgstr ""
 
-#: src/preferences/pages/general.ui:168
+#: src/preferences/pages/general.ui:201
 msgid "Keep rounded corners for maximized windows"
 msgstr ""
 
-#: src/preferences/pages/general.ui:173
+#: src/preferences/pages/general.ui:206
 msgid "Keep rounded corners for fullscreen windows"
 msgstr ""
 
-#: src/preferences/pages/general.ui:183
+#: src/preferences/pages/general.ui:216
 msgid "Tweaks"
 msgstr ""
 
-#: src/preferences/pages/general.ui:186
+#: src/preferences/pages/general.ui:219
 msgid "Add rounded corners to Kitty Terminal on Wayland"
 msgstr ""
 
-#: src/preferences/pages/general.ui:187
+#: src/preferences/pages/general.ui:220
 msgid "Adjust paddings for Kitty Terminal to correctly round its corners"
 msgstr ""
 
-#: src/preferences/pages/general.ui:194
+#: src/preferences/pages/general.ui:227
 msgid "Debug"
 msgstr ""
 
-#: src/preferences/pages/general.ui:197
+#: src/preferences/pages/general.ui:230
 msgid "Enable debug logs"
 msgstr ""
 
-#: src/preferences/pages/general.ui:198
+#: src/preferences/pages/general.ui:231
 msgid ""
 "Run journalctl -o cat -f /usr/bin/gnome-shell in your terminal to see the log"
 msgstr ""
 
-#: src/preferences/pages/general.ui:207
+#: src/preferences/pages/general.ui:240
 msgid "Reset preferences"
 msgstr ""
 
@@ -262,6 +271,11 @@ msgstr ""
 #: src/preferences/pages/blacklist.ts:63
 msgid "Blacklist"
 msgstr ""
+
+#: src/preferences/pages/general.ts:322
+#, fuzzy
+msgid "Inner border width"
+msgstr "Randa larĝo"
 
 #: src/preferences/widgets/app_row.ts:34
 msgid "Window class"
