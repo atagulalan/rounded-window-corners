@@ -28,6 +28,8 @@ type Schema = {
     'custom-rounded-corner-settings': CustomRoundedCornerSettings;
     'focused-shadow': BoxShadow;
     'unfocused-shadow': BoxShadow;
+    'use-focused-border-color': boolean;
+    'focused-border-color': [number, number, number, number];
     'keep-shadow-for-maximized-fullscreen': boolean;
     'debug-mode': boolean;
     'tweak-kitty-terminal': boolean;
@@ -48,6 +50,8 @@ export const Schema = {
     'custom-rounded-corner-settings': 'a{sv}',
     'focused-shadow': 'a{si}',
     'unfocused-shadow': 'a{si}',
+    'use-focused-border-color': 'b',
+    'focused-border-color': '(dddd)',
     'keep-shadow-for-maximized-fullscreen': 'b',
     'debug-mode': 'b',
     'tweak-kitty-terminal': 'b',

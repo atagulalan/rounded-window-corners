@@ -33,6 +33,9 @@ export const GeneralPage = GObject.registerClass(
             'skipLibhandy',
             'borderWidth',
             'borderColor',
+            'useFocusedBorderColor',
+            'focusedBorderColorRow',
+            'focusedBorderColor',
             'cornerRadius',
             'cornerSmoothing',
             'keepShadowForMaximizedFullscreen',
@@ -48,6 +51,9 @@ export const GeneralPage = GObject.registerClass(
         private declare _skipLibhandy: Adw.SwitchRow;
         private declare _borderWidth: Gtk.Adjustment;
         private declare _borderColor: Gtk.ColorDialogButton;
+        private declare _useFocusedBorderColor: Adw.SwitchRow;
+        private declare _focusedBorderColorRow: Adw.ActionRow;
+        private declare _focusedBorderColor: Gtk.ColorDialogButton;
         private declare _cornerRadius: Gtk.Adjustment;
         private declare _cornerSmoothing: Gtk.Adjustment;
         private declare _keepShadowForMaximizedFullscreen: Adw.SwitchRow;
@@ -98,6 +104,40 @@ export const GeneralPage = GObject.registerClass(
                         color.alpha,
                     ];
                     this.#updateGlobalConfig();
+                },
+            );
+
+            bindPref(
+                'use-focused-border-color',
+                this._useFocusedBorderColor,
+                'active',
+                Gio.SettingsBindFlags.DEFAULT,
+            );
+
+            const focusedColor = new Gdk.RGBA();
+            [focusedColor.red, focusedColor.green, focusedColor.blue, focusedColor.alpha] =
+                getPref('focused-border-color');
+            this._focusedBorderColor.set_rgba(focusedColor);
+            this._focusedBorderColor.connect(
+                'notify::rgba',
+                (button: Gtk.ColorDialogButton) => {
+                    const color = button.get_rgba();
+                    setPref('focused-border-color', [
+                        color.red,
+                        color.green,
+                        color.blue,
+                        color.alpha,
+                    ]);
+                },
+            );
+
+            this.#updateFocusedBorderColorUi(
+                this._useFocusedBorderColor.get_active(),
+            );
+            this._useFocusedBorderColor.connect(
+                'notify::active',
+                (swtch: Adw.SwitchRow) => {
+                    this.#updateFocusedBorderColorUi(swtch.get_active());
                 },
             );
 
@@ -213,6 +253,10 @@ export const GeneralPage = GObject.registerClass(
 
         #updateGlobalConfig() {
             setPref('global-rounded-corner-settings', this.#settings);
+        }
+
+        #updateFocusedBorderColorUi(enabled: boolean) {
+            this._focusedBorderColorRow.set_visible(enabled);
         }
     },
 );

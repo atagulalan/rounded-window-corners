@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-13 15:46+0200\n"
+"POT-Creation-Date: 2026-06-09 20:52+0300\n"
 "PO-Revision-Date: 2023-03-09 15:37+0000\n"
 "Last-Translator: Evgeniy Khramov <thejenjagamertjg@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/rounded-window-"
@@ -159,64 +159,73 @@ msgid "Border color"
 msgstr "Цвет границы"
 
 #: src/preferences/pages/general.ui:74
+msgid "Different border color when focused"
+msgstr ""
+
+#: src/preferences/pages/general.ui:80 src/preferences/pages/general.ui:88
+#, fuzzy
+msgid "Focused border color"
+msgstr "Цвет границы"
+
+#: src/preferences/pages/general.ui:97
 #: src/preferences/widgets/custom_settings_row.ts:28
 #, fuzzy
 msgid "Corner radius"
 msgstr "Радиус границы"
 
-#: src/preferences/pages/general.ui:101
+#: src/preferences/pages/general.ui:124
 #: src/preferences/widgets/custom_settings_row.ts:38
 #, fuzzy
 msgid "Corner smoothing"
 msgstr "Сглаживание углов"
 
-#: src/preferences/pages/general.ui:127
+#: src/preferences/pages/general.ui:150
 #, fuzzy
 msgid "Window shadow"
 msgstr "Тень окна"
 
-#: src/preferences/pages/general.ui:128
+#: src/preferences/pages/general.ui:151
 msgid "Customize the shadow of the rounded corner window"
 msgstr "Настроить тень окна с закругленными углами"
 
-#: src/preferences/pages/general.ui:140
+#: src/preferences/pages/general.ui:163
 #, fuzzy
 msgid "Keep shadows for maximized and fullscreen windows"
 msgstr "Сохранить закругленные углы при полноэкранном режиме"
 
-#: src/preferences/pages/general.ui:145
+#: src/preferences/pages/general.ui:168
 #, fuzzy
 msgid "Keep rounded corners for maximized windows"
 msgstr "Сохранить закругленные углы, когда они развернуты"
 
-#: src/preferences/pages/general.ui:150
+#: src/preferences/pages/general.ui:173
 #, fuzzy
 msgid "Keep rounded corners for fullscreen windows"
 msgstr "Сохранить закругленные углы при полноэкранном режиме"
 
-#: src/preferences/pages/general.ui:160
+#: src/preferences/pages/general.ui:183
 msgid "Tweaks"
 msgstr "Твики"
 
-#: src/preferences/pages/general.ui:163
+#: src/preferences/pages/general.ui:186
 #, fuzzy
 msgid "Add rounded corners to Kitty Terminal on Wayland"
 msgstr "Попробовать добавить закругленные углы в Kitty Terminal в Wayland"
 
-#: src/preferences/pages/general.ui:164
+#: src/preferences/pages/general.ui:187
 msgid "Adjust paddings for Kitty Terminal to correctly round its corners"
 msgstr ""
 
-#: src/preferences/pages/general.ui:171
+#: src/preferences/pages/general.ui:194
 msgid "Debug"
 msgstr "Отладка"
 
-#: src/preferences/pages/general.ui:174
+#: src/preferences/pages/general.ui:197
 #, fuzzy
 msgid "Enable debug logs"
 msgstr "Включить журнал"
 
-#: src/preferences/pages/general.ui:175
+#: src/preferences/pages/general.ui:198
 #, fuzzy
 msgid ""
 "Run journalctl -o cat -f /usr/bin/gnome-shell in your terminal to see the log"
@@ -224,7 +233,7 @@ msgstr ""
 "Запустите <i>journalctl -o cat -f /usr/bin/gnome-shell</i> в терминале, "
 "чтобы посмотреть журнал"
 
-#: src/preferences/pages/general.ui:184
+#: src/preferences/pages/general.ui:207
 #, fuzzy
 msgid "Reset preferences"
 msgstr "Сбросить настройки"

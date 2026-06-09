@@ -165,9 +165,25 @@ export function onRestacked(): void {
 
 export const onSizeChanged = refreshRoundedCorners;
 
-export const onFocusChanged = refreshShadow;
+export const onFocusChanged = refreshRoundedCorners;
 
 export const onSettingsChanged = refreshAllRoundedCorners;
+
+/**
+ * Get the border color for a window based on its focus state.
+ *
+ * @param win - The window to get the border color for.
+ * @param config - Rounded corners configuration for the window.
+ */
+function getBorderColor(
+    win: Meta.Window,
+    config: ReturnType<typeof getRoundedCornersCfg>,
+): [number, number, number, number] {
+    if (win.appears_focused && getPref('use-focused-border-color')) {
+        return getPref('focused-border-color');
+    }
+    return config.borderColor;
+}
 
 /**
  * Create the shadow actor for a window.
@@ -271,6 +287,7 @@ function refreshRoundedCorners(actor: RoundedWindowActor): void {
         windowScaleFactor(win),
         cfg,
         computeBounds(actor, windowContentOffset),
+        getBorderColor(win, cfg),
     );
 
     // Update BindConstraint for the shadow

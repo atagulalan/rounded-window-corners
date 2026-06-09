@@ -70,6 +70,29 @@
           </object>
         </child>
         <child>
+          <object class="AdwSwitchRow" id="useFocusedBorderColor">
+            <property name="title" translatable="yes">Different border color when focused</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow" id="focusedBorderColorRow">
+            <property name="visible">false</property>
+            <property name="title" translatable="yes">Focused border color</property>
+            <property name="activatable">true</property>
+            <property name="activatable-widget">focusedBorderColor</property>
+            <child>
+              <object class="GtkColorDialogButton" id="focusedBorderColor">
+                <property name="valign">center</property>
+                <property name="dialog">
+                  <object class="GtkColorDialog">
+                    <property name="title" translatable="yes">Focused border color</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
           <object class="AdwActionRow">
             <property name="title" translatable="yes">Corner radius</property>
             <child>

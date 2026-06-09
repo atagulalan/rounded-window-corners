@@ -99,6 +99,16 @@
       </default>
     </key>
 
+    <key name="use-focused-border-color" type="b">
+      <summary>Use a different border color for focused windows</summary>
+      <default>false</default>
+    </key>
+
+    <key name="focused-border-color" type="(dddd)">
+      <summary>Border color for focused windows</summary>
+      <default>(0.8, 0.8, 0.2, 1.0)</default>
+    </key>
+
     <key name="keep-shadow-for-maximized-fullscreen" type="b">
       <summary>Keep shadows for maximized and fullscreen windows</summary>
       <default>false</default>
